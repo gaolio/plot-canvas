@@ -4,7 +4,7 @@
  */
 
  import "./assets/index.scss"
- import Plot from "./util/plot"
+ import Plot from "./util"
 
 const plot = new Plot({
   el: document.getElementById('app'),

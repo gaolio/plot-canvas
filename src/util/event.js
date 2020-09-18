@@ -5,10 +5,10 @@
  */
 
 
- const dbClick = () => {}
+ export const dbClick = () => {}
 
- const dbClick = () => {}
+ export const mouseDown = () => {}
 
- const dbClick = () => {}
+ export const mouseUp = () => {}
 
- const dbClick = () => {}
+ export const mousemove = () => {}

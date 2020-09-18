@@ -9,7 +9,7 @@ const colors = {
   fillStyle: '#D6E9FE',
   shadowColor: '#067FFB',
 }
-
+// 绘制图形
 const draw = new Map([
 ['rect', (ctx, options, val) => {
   let { x, y, w, h, r } = options;
@@ -79,5 +79,7 @@ const draw = new Map([
   ctx.closePath();
 }]
 ]);
+
+
 
 export default draw

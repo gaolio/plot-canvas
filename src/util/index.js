@@ -174,12 +174,12 @@
 
 // }
 
-
-
-
+import { initCav } from "./common"
 
 class Plot{
-   constructor(){}
+   constructor(params){
+      
+   }
 }
 
 

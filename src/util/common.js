@@ -4,7 +4,7 @@
  */
 
 // create canvas
-const createCav = () => {
+export const createCav = () => {
   const canvas = document.createElement('canvas');
   return canvas
 }
@@ -14,7 +14,7 @@ const createCav = () => {
  *  @param { Element } el  canvas node
  *  初始化cav画布大小100% 并添加
  */
-const initCav = (el, canvas) => {
+export const initCav = (el, canvas) => {
   const obj = el.getBoundingClientRect && el.getBoundingClientRect();
   if (obj) {
     canvas.setAttribute('width', obj.width);
@@ -34,7 +34,7 @@ const initCav = (el, canvas) => {
  * 
  */
 
-const computer = ($event, cav, sourceData, cav) => {
+export const computer = ($event, cav, sourceData, cav) => {
   const cx = $event.clientX - cav.offsetLeft, cy = $event.clientY - cav.offsetTop;
   const obj = null;
     // try 跳出for循环
@@ -57,3 +57,14 @@ const computer = ($event, cav, sourceData, cav) => {
     }
   return obj ? obj : {status: false};
 }
+
+
+/**
+ *  select dom
+ */
+
+export const queryDom = (node) => {
+  console.log(node);
+} 
+
+
