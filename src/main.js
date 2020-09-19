@@ -4,11 +4,11 @@
  */
 
  import "./assets/index.scss"
- import Plot from "./util"
+ import Plot from "./index"
 
 const plot = new Plot({
-  el: document.getElementById('app'),
-  imgData: [
+  el: '.app',
+  sourceData: [
     {
       type: 'rect',
       options: { x: 100, y: 100, w: 100, h: 45, r: 10, text: '开始' }

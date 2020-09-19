@@ -174,12 +174,21 @@
 
 // }
 
-import { initCav } from "./common"
+import * as PubMethods from "./util/common"
+import { initCanvas } from "./util/methods"
+
+// 用来存储过度信息
+const container = {};
 
 class Plot{
    constructor(params){
-      
+      // dom节点
+      container.el = PubMethods.queryDom(params.el);
+      this.sourceData = PubMethods.watchSourceData(params.sourceData, () => {console.log(this);});
+      container.canvas = initCanvas(container.el);
+      console.log(container);
    }
+
 }
 
 

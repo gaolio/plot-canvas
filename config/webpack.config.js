@@ -38,7 +38,7 @@ module.exports = {
          // 全局处理vue插件
         // new VueLoaderPlugin(),
         new htmlWebpackPlugin({
-            title: "Flash-UI",
+            title: "Plot",
             baseUrl: resolve('../public'),
             template: resolve('../public/index.html'),
             inject: true,

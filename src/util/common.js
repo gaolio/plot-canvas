@@ -21,6 +21,7 @@ export const initCav = (el, canvas) => {
     canvas.setAttribute('height', obj.height)
   }
   el.appendChild(canvas);
+  return canvas.getContext('2d');
 }
 
 /**
@@ -34,8 +35,8 @@ export const initCav = (el, canvas) => {
  * 
  */
 
-export const computer = ($event, cav, sourceData, cav) => {
-  const cx = $event.clientX - cav.offsetLeft, cy = $event.clientY - cav.offsetTop;
+export const computersssss = (ev, cav, sourceData) => {
+  const cx = ev.clientX - cav.offsetLeft, cy = ev.clientY - cav.offsetTop;
   const obj = null;
     // try 跳出for循环
    try {
@@ -61,10 +62,31 @@ export const computer = ($event, cav, sourceData, cav) => {
 
 /**
  *  select dom
+ *  @param {string | Object}
+ *  @returns dom
  */
 
-export const queryDom = (node) => {
-  console.log(node);
+export const queryDom = node => {
+    const status = typeof node === 'string';
+    if (!status) return node;
+    return document.querySelector(node);    
 } 
 
+/**
+ *  @param {Object} obj canvas数据源
+ *  @param {Function} fun 改变之后的回掉函数
+ */
+export const watchSourceData = (obj, fun) => {
+    const proxy = new Proxy(obj, {
+        get: function(obj,key){
+          return obj[key]
+        },
+        set: function(obj, key, value){
+          obj[key] = value;
+          fun()
+          return true;
+        }
+    })
+    return proxy
+}
 
