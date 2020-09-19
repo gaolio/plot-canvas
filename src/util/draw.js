@@ -82,4 +82,10 @@ const draw = new Map([
 
 
 
+export const drawAll = (sourceData, ctx) => {
+  sourceData.forEach(item => {
+    draw.get(item.type)(ctx, item.options)
+  });
+}
+
 export default draw

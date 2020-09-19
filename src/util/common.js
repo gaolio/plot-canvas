@@ -3,6 +3,8 @@
  *  exmple： computer watch Object
  */
 
+import { initCon } from "./methods";
+
 // create canvas
 export const createCav = () => {
   const canvas = document.createElement('canvas');
@@ -35,28 +37,24 @@ export const initCav = (el, canvas) => {
  * 
  */
 
-export const computersssss = (ev, cav, sourceData) => {
+export const computer = (ev, params) => {
+  const { cav, sourceData } = params;
+  console.log(params);
   const cx = ev.clientX - cav.offsetLeft, cy = ev.clientY - cav.offsetTop;
-  const obj = null;
-    // try 跳出for循环
-   try {
-      sourceData.forEach((item, index) => {
-        // 对象的坐标和宽高
-        const {x,y,w,h} = item.options
-        // 判断比对得出结果
-        if (cx > x && cx <= (x + w) && cy >= y && cy <= (y + h)) {
-          obj =  {
-            status: true,
-            data: item,
-            index,
-          }
-          throw Error();
-        } 
-      });
-    } catch (error) {
-      throw error
+  let obj = null;
+  sourceData.forEach((item, index) => {
+    // 对象的坐标和宽高
+    const { x, y, w, h } = item.options
+    // 判断比对得出结果
+    if (cx > x && cx <= (x + w) && cy >= y && cy <= (y + h)) {
+      obj = {
+        status: true,
+        data: item,
+        index,
+      }
     }
-  return obj ? obj : {status: false};
+  });
+  return obj ? obj : { status: false };
 }
 
 
@@ -67,26 +65,28 @@ export const computersssss = (ev, cav, sourceData) => {
  */
 
 export const queryDom = node => {
-    const status = typeof node === 'string';
-    if (!status) return node;
-    return document.querySelector(node);    
-} 
+  const status = typeof node === 'string';
+  if (!status) return node;
+  return document.querySelector(node);
+}
 
 /**
  *  @param {Object} obj canvas数据源
  *  @param {Function} fun 改变之后的回掉函数
  */
 export const watchSourceData = (obj, fun) => {
-    const proxy = new Proxy(obj, {
-        get: function(obj,key){
-          return obj[key]
-        },
-        set: function(obj, key, value){
-          obj[key] = value;
-          fun()
-          return true;
-        }
-    })
-    return proxy
+  const proxy = new Proxy(obj, {
+    get: function (obj, key) {
+      return obj[key]
+    },
+    set: function (obj, key, value) {
+      obj[key] = value;
+      fun()
+      return true;
+    }
+  })
+  return proxy
 }
+
+
 
