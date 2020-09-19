@@ -39,7 +39,6 @@ export const initCav = (el, canvas) => {
 
 export const computer = (ev, params) => {
   const { cav, sourceData } = params;
-  console.log(params);
   const cx = ev.clientX - cav.offsetLeft, cy = ev.clientY - cav.offsetTop;
   let obj = null;
   sourceData.forEach((item, index) => {
@@ -74,14 +73,14 @@ export const queryDom = node => {
  *  @param {Object} obj canvas数据源
  *  @param {Function} fun 改变之后的回掉函数
  */
-export const watchSourceData = (obj, fun) => {
+export const watchSourceData = function (obj, fun, ctx) {
   const proxy = new Proxy(obj, {
     get: function (obj, key) {
       return obj[key]
     },
     set: function (obj, key, value) {
       obj[key] = value;
-      fun()
+      fun(obj, ctx)
       return true;
     }
   })
@@ -89,4 +88,28 @@ export const watchSourceData = (obj, fun) => {
 }
 
 
+// 修改数据源
+export const modifySource= function(){
+  console.log(this);
+  const length =  this.sourceData.length;
+  this.sourceData[length] = {
+   type: 'rect',
+   options: { x: 100, y: 400, w: 100, h: 45, r: 10, text: '开始' }
+ }
+}
+
+
+
+// 函数截流
+
+const throttle = (fun, time) => {
+  const timer = new Date().getTime();
+  return () => {
+     const currentTime = new Date().getTime();
+     if ((currentTime - timer) > time) {
+        fun()
+        timer = currentTime;
+     }
+  }
+}
 
