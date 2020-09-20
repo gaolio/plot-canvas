@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 注意：在你的webpack里边不能配置html-loader 否则他会以html的方式解析成字符串 -->
+    <title><%= htmlWebpackPlugin.options.title %> </title>
+</head>
+<body>
+    <noscript>sorry</noscript>
+    <div id="app" class="app"></div>
+</body>
+</html>
