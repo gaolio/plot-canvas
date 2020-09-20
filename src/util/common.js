@@ -90,7 +90,6 @@ export const watchSourceData = function (obj, fun, ctx) {
 
 // 修改数据源
 export const modifySource= function(){
-  console.log(this);
   const length =  this.sourceData.length;
   this.sourceData[length] = {
    type: 'rect',
@@ -111,5 +110,10 @@ const throttle = (fun, time) => {
         timer = currentTime;
      }
   }
+}
+
+// 对象克隆
+export const cloneObj = obj => {
+  return JSON.parse(JSON.stringify(obj))
 }
 

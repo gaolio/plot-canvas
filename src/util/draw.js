@@ -82,7 +82,8 @@ const draw = new Map([
 
 
 
-export const drawAll = function(sourceData, ctx) {
+export const drawAll = function(sourceData, ctx, cav) {
+  cav && cav.width && ctx.clearRect(0,0, cav.width, cav.height)
   for(let i =0; i < sourceData.length; i++) {
     const item = sourceData[i]
     draw.get(item.type)(ctx, item.options)

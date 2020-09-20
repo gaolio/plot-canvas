@@ -190,13 +190,13 @@ class Plot{
       // 数据源 监听
       this.sourceData = PubMethods.watchSourceData.call(this, params.sourceData, drawAll, container.canvas.ctx);
       // 绘制canvas
-      drawAll(this.sourceData, container.canvas.ctx);
+      drawAll(this.sourceData, container.canvas.ctx, container.canvas.cav);
       // 事件添加
       addEvents(this, container.canvas.cav, PubMethods.computer, {cav: container.canvas.cav, sourceData: this.sourceData, ctx:container.canvas.ctx })
       // 添加一条数据
       PubMethods.modifySource.call(this)
       // 数据本身是一个数组
-      console.log(...this.sourceData);
+      // console.log(...this.sourceData);
    }
 
 }
