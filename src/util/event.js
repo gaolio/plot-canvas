@@ -9,7 +9,7 @@ const style = new Map([
    //  ['mousemove', 'plot-hove'],
    //  ['mousemove', 'plot-hove']
 ])
-import {drawAll, colors} from "./draw"
+import {drawAll, drawcts, colors} from "./draw"
 import { cloneObj } from "./common"
 import config from '../config'
 import { modifyText, comPos } from "./business"
@@ -41,28 +41,31 @@ const currentDataFormate = (e,obj,cav) => {
 
  export const mouseDown = function (fun,params) {
    const e = event || window.event;
-   const result = fun(e, params);
-   const self = this;
-   const {cav, ctx} = params;
-   let { data,index } = result;
-   let currentData;
-   if (cav, result.status) {
-      currentData = cloneObj(data);
-      params.cav.onmousemove = function(){
-         const e = event || window.event;
-         currentData = currentDataFormate(e,currentData, cav);
-         const arr = [...self.sourceData, currentData];
-         drawAll(arr, ctx, cav)
+   // 鼠标左击事件
+   if (e.button === 0) {
+      const result = fun(e, params);
+      const self = this;
+      const {cav, ctx} = params;
+      let { data,index } = result;
+      let currentData;
+      if (cav, result.status) {
+         currentData = cloneObj(data);
+         params.cav.onmousemove = function(){
+            const e = event || window.event;
+            currentData = currentDataFormate(e,currentData, cav);
+            const arr = [...self.sourceData, currentData];
+            drawAll(arr, ctx, cav)
+         }
       }
-   }
-   params.cav.onmouseup = function(){
-      params.cav.onmousemove = null;
-      if(currentData) {
-         data.options.x = currentData.options.x;
-         data.options.y = currentData.options.y;
-         self.sourceData[index] = data;
-         // drawAll(self.sourceData, ctx, cav);
-         currentData = null;
+      params.cav.onmouseup = function(){
+         params.cav.onmousemove = null;
+         if(currentData) {
+            data.options.x = currentData.options.x;
+            data.options.y = currentData.options.y;
+            self.sourceData[index] = data;
+            // drawAll(self.sourceData, ctx, cav);
+            currentData = null;
+         }
       }
    }
  }
@@ -71,6 +74,7 @@ const currentDataFormate = (e,obj,cav) => {
 
  export const mousemove = function(fun,params) {
    let timer = new Date().getTime();
+   const self = this;
    // 函数节流
    return () => {
       const e = event || window.event;
@@ -79,7 +83,8 @@ const currentDataFormate = (e,obj,cav) => {
          const result = fun(e, params);
          timer = currentTime;
          // 鼠标样式
-         params.cav.classList[result.status ? 'add' : 'remove'](style.get('mousemove'))
+         params.cav.classList[result.status ? 'add' : 'remove'](style.get('mousemove'));
+         result.status && console.log(self.sourceData);
       }
    }
  }

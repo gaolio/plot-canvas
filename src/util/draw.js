@@ -60,33 +60,17 @@ const draw = new Map([
   ctx.closePath();
 }],
 // 控制点
-['ctspot', (ctx, options, val) => {
-  let { x, y, w, h, r } = options;
-  const center = 2 * r;
-  if (w < center) w = center;
-  if (h < center) h = center;
+['ctspot', (ctx, options) => {
+  let { x, y } = options;
   ctx.strokeStyle = options.strokeStyle || colors.strokeStyle
   ctx.fillStyle = options.fillStyle || colors.fillStyle
   ctx.setLineDash(options.setLineDash || [])
   ctx.shadowBlur = 2;
   ctx.shadowColor = colors.shadowColor;
-  ctx.lineWidth = "2"
+  ctx.lineWidth = "1"
   ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2, true);
+  ctx.arc(x, y, 3, 0, Math.PI * 2, true);
   ctx.stroke();
-  ctx.closePath();
-  // 绘制文字部分
-  if (options.text) {
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = colors.fontColor;
-    ctx.font = "normal small-caps 300 14px arial";
-    const fontWidth = options.text.length * 16;
-    // 计算文本位置 居中
-    const left = x + (w - fontWidth) / 2;
-    const top = y + (h / 2) + 5;
-    // 填充文本
-    ctx.fillText(options.text, left, top);
-  }
   ctx.closePath();
 }]
 ]);
@@ -100,5 +84,10 @@ export const drawAll = function(sourceData, ctx, cav) {
     draw.get(item.type)(ctx, item.options)
   }
 }
-
-export default draw
+// 货值拖拽角标
+export const drawcts = function(options, status){
+  options.forEach(item => {
+    // status是否绘制
+    if(item.type === 'ctspot') item.show = status;
+  })
+}
