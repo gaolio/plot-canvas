@@ -3,12 +3,19 @@
  *   rect：圆角矩形
  *   text: 文本 
  */
-const colors = {
+export const colors = {
   fontColor: '#000',
   strokeStyle: '#067FFB',
   fillStyle: '#D6E9FE',
   shadowColor: '#067FFB',
+  currentSelectColors:{
+    strokeStyle: '#eaf6fd',
+    fillStyle: '#eaf6fd',
+  }
 }
+// 计算文字宽度
+import { computerText } from "./business"
+
 // 绘制图形
 const draw = new Map([
 ['rect', (ctx, options, val) => {
@@ -39,7 +46,11 @@ const draw = new Map([
     ctx.shadowBlur = 0;
     ctx.fillStyle = colors.fontColor;
     ctx.font = "normal small-caps 300 14px arial";
-    const fontWidth = options.text.length * 16;
+    const fontWidth = computerText(options.text || '');
+    if(fontWidth > w) { 
+      options.w = fontWidth + 20;
+      return false
+    }
     // 计算文本位置 居中
     const left = x + (w - fontWidth) / 2;
     const top = y + (h / 2) + 5;
@@ -81,7 +92,7 @@ const draw = new Map([
 ]);
 
 
-
+// 绘制节点
 export const drawAll = function(sourceData, ctx, cav) {
   cav && cav.width && ctx.clearRect(0,0, cav.width, cav.height)
   for(let i =0; i < sourceData.length; i++) {

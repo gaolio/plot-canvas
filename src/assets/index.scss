@@ -37,4 +37,15 @@ html,body {
   .plot-hover{
     cursor: move;
   }
+  .plot-textarera{
+    position: fixed;
+    border: 0;
+    outline: none;
+    display: none;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .plot-text {
+    font: normal small-caps 300 14px arial;
+  }
 }

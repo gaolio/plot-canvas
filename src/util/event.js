@@ -9,23 +9,34 @@ const style = new Map([
    //  ['mousemove', 'plot-hove'],
    //  ['mousemove', 'plot-hove']
 ])
-import {drawAll} from "./draw"
+import {drawAll, colors} from "./draw"
 import { cloneObj } from "./common"
 import config from '../config'
+import { modifyText, comPos } from "./business"
 
-
+// 当前移动对象
 const currentDataFormate = (e,obj,cav) => {
    obj.options.x = e.clientX - cav.offsetLeft - obj.options.w / 2;
    obj.options.y = e.clientY - cav.offsetTop- obj.options.h / 2;
    obj.options.setLineDash = config.setLineDash;
    obj.options.text = '';
+   obj.options.fillStyle = colors.currentSelectColors.fillStyle;
+   obj.options.strokeStyle = colors.currentSelectColors.strokeStyle;
    return obj;
 }
 
  export const dbClick = function (fun,params) {
     const e = event || window.event;
     const result = fun(e, params);
-    console.log(result, this);
+    if(result.status) {
+      // 位置
+      const obj = cloneObj(result.data);
+      const {options} = obj; 
+      const {x, y} = comPos(params.cav, options);
+      options.x = x;
+      options.y = y;
+      modifyText(options, result)
+    }  
  }
 
  export const mouseDown = function (fun,params) {
@@ -50,7 +61,7 @@ const currentDataFormate = (e,obj,cav) => {
          data.options.x = currentData.options.x;
          data.options.y = currentData.options.y;
          self.sourceData[index] = data;
-         drawAll(self.sourceData, ctx, cav);
+         // drawAll(self.sourceData, ctx, cav);
          currentData = null;
       }
    }

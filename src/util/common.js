@@ -3,8 +3,6 @@
  *  exmple： computer watch Object
  */
 
-import { initCon } from "./methods";
-
 // create canvas
 export const createCav = () => {
   const canvas = document.createElement('canvas');
@@ -73,20 +71,33 @@ export const queryDom = node => {
  *  @param {Object} obj canvas数据源
  *  @param {Function} fun 改变之后的回掉函数
  */
-export const watchSourceData = function (obj, fun, ctx) {
+export const watchSourceData = function (obj, fun, ctx, cav) {
+  // 始终改变的是原素组
+  const self = this;
   const proxy = new Proxy(obj, {
     get: function (obj, key) {
       return obj[key]
     },
     set: function (obj, key, value) {
+      if(typeof value === 'object') value = deepWatch.call(self, value, fun, ctx, cav);
       obj[key] = value;
-      fun(obj, ctx)
+      fun(self.sourceData || obj, ctx, cav)
       return true;
     }
   })
   return proxy
 }
-
+// 循环添加proxy
+export const deepWatch = function(obj, fun, ctx, cav) {
+  let result = false;
+  if (typeof obj === 'object') {
+    for (let i in obj) {
+      if (typeof obj[i] === 'object') obj[i] = deepWatch.call(this, obj[i],fun, ctx,cav)
+    }
+    result = watchSourceData.call(this, obj, fun, ctx,cav)
+  } else { result = obj }
+  return result;
+}
 
 // 修改数据源
 export const modifySource= function(){
@@ -116,4 +127,3 @@ const throttle = (fun, time) => {
 export const cloneObj = obj => {
   return JSON.parse(JSON.stringify(obj))
 }
-
