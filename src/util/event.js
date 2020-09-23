@@ -6,6 +6,7 @@
 
 const style = new Map([
     ['mousemove', 'plot-hover'],
+    ['mousemoveCts', 'plot-hover-cts']
    //  ['mousemove', 'plot-hove'],
    //  ['mousemove', 'plot-hove']
 ])
@@ -82,8 +83,10 @@ const currentDataFormate = (e,obj,cav) => {
       if (currentTime - timer > 20) {
          const result = fun(e, params);
          timer = currentTime;
+         const status = result.status || result.cts;
          // 鼠标样式
-         params.cav.classList[result.status ? 'add' : 'remove'](style.get('mousemove'));
+         params.cav.classList[status ? 'add' : 'remove'](style.get('mousemove'));
+         params.cav.classList[result.cts ? 'add' : 'remove'](style.get('mousemoveCts'));
          self.sourceData.ctspot = result.status ? drawcts(result.data.options) : [];
       }
    }

@@ -45,9 +45,9 @@ export const computer = (ev, params) => {
     // 判断比对得出结果
     if (cx > x && cx <= (x + w) && cy >= y && cy <= (y + h)) {
       const cts = computerCts({cx,cy}, sourceData[i].options);
-      console.log(cts);
       // 判断坐标点
       obj = {
+        cts,
         status: true,
         data: sourceData[i],
         i,
@@ -97,8 +97,9 @@ export const computerCts = ($event, options) => {
   // 判断范围
   for(let i = 0; i < obj.length; i++) {
     const {x,y} = obj[i].options;
-    if (cx > x && cx <= (x + range) && cy > y && cy <= (y + range) ) {
+    if (cx > (x-range) && cx <= (x + range) && cy > (y-range) && cy <= (y + range) ) {
       result = {x,y}
+      return result;
     }
   }
   return result;
