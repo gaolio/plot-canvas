@@ -53,7 +53,7 @@ const currentDataFormate = (e,obj,cav) => {
          params.cav.onmousemove = function(){
             const e = event || window.event;
             currentData = currentDataFormate(e,currentData, cav);
-            const arr = [...self.sourceData, currentData];
+            const arr = [...self.sourceData.masterNode, currentData];
             drawAll(arr, ctx, cav)
          }
       }
@@ -84,7 +84,7 @@ const currentDataFormate = (e,obj,cav) => {
          timer = currentTime;
          // 鼠标样式
          params.cav.classList[result.status ? 'add' : 'remove'](style.get('mousemove'));
-         result.status && console.log(self.sourceData);
+         self.sourceData.ctspot = result.status ? drawcts(result.data.options) : [];
       }
    }
  }

@@ -11,6 +11,9 @@ export const colors = {
   currentSelectColors:{
     strokeStyle: '#eaf6fd',
     fillStyle: '#eaf6fd',
+  },
+  ctspot:{
+    fillStyle: '#FFF',
   }
 }
 // 计算文字宽度
@@ -63,14 +66,13 @@ const draw = new Map([
 ['ctspot', (ctx, options) => {
   let { x, y } = options;
   ctx.strokeStyle = options.strokeStyle || colors.strokeStyle
-  ctx.fillStyle = options.fillStyle || colors.fillStyle
+  ctx.fillStyle = '#FFF'
   ctx.setLineDash(options.setLineDash || [])
-  ctx.shadowBlur = 2;
-  ctx.shadowColor = colors.shadowColor;
-  ctx.lineWidth = "1"
+  ctx.lineWidth = "2"
   ctx.beginPath();
   ctx.arc(x, y, 3, 0, Math.PI * 2, true);
   ctx.stroke();
+  ctx.fill();
   ctx.closePath();
 }]
 ]);
@@ -78,16 +80,58 @@ const draw = new Map([
 
 // 绘制节点
 export const drawAll = function(sourceData, ctx, cav) {
-  cav && cav.width && ctx.clearRect(0,0, cav.width, cav.height)
-  for(let i =0; i < sourceData.length; i++) {
-    const item = sourceData[i]
-    draw.get(item.type)(ctx, item.options)
+  cav && cav.width && ctx.clearRect(0,0, cav.width, cav.height);
+  // 数组对象处理方式
+  if (Array.isArray(sourceData)) {
+     sourceData.forEach(item => {
+      draw.get(item.type)(ctx, item.options)
+     })
+     return false;
   }
-}
-// 货值拖拽角标
-export const drawcts = function(options, status){
-  options.forEach(item => {
-    // status是否绘制
-    if(item.type === 'ctspot') item.show = status;
+  const keys = Object.keys(sourceData);
+  keys.forEach(item => {
+      // 主节点处理流程
+      if (item === 'masterNode' || item === "ctspot") {
+        const params =  sourceData[item];
+        for(let i =0; i < params.length; i++) {
+          const items = params[i]
+          draw.get(items.type)(ctx, items.options)
+        }
+      }
   })
+}
+// 拖拽角标
+export const drawcts = function(options){
+    const { x,y,h,w } = options;
+    const obj = [
+      {
+        type: 'ctspot',
+        options:{
+          x,
+          y: y + h/2
+        }
+      },
+      {
+        type: 'ctspot',
+        options:{
+          x: x + w/2,
+          y
+        }
+      },
+      {
+        type: 'ctspot',
+        options:{
+          x: x + w,
+          y: y + h/2
+        }
+      },
+      {
+        type: 'ctspot',
+        options:{
+          x: x + w/2,
+          y: y + h
+        }
+      }
+    ]
+    return obj
 }
