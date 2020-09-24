@@ -75,14 +75,16 @@ const draw = new Map([
     ctx.fill();
     ctx.closePath();
   }],
-  ['line', (ctx, options) => {
+  ['line', (context, options) => {
     const { x, y } = options.start;
     const { ex, ey } = options.end;
-    context.moveTo(100, 100);       //设置起点状态
-    context.lineTo(700, 700);       //设置末端状态
-    context.lineWidth = 5;          //设置线宽状态
-    context.strokeStyle = "red";  //设置线的颜色状态
+    context.beginPath();
+    context.moveTo(x, y);       //设置起点状态
+    context.lineTo(ex, ey);       //设置末端状态
+    context.lineWidth = 1;          //设置线宽状态
+    context.strokeStyle = "#abb7c4";  //设置线的颜色状态
     context.stroke();
+    context.closePath();
   }]
 ]);
 
@@ -100,7 +102,7 @@ export const drawAll = function (sourceData, ctx, cav) {
   const keys = Object.keys(sourceData);
   keys.forEach(item => {
     // 主节点处理流程
-    if (item === 'masterNode' || item === "ctspot") {
+    if (item === 'masterNode' || item === "ctspot" || "line") {
       const params = sourceData[item];
       for (let i = 0; i < params.length; i++) {
         const items = params[i]

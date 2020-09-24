@@ -45,6 +45,7 @@ const currentDataFormate = (e,obj,cav) => {
    // 鼠标左击事件
    if (e.button === 0) {
       const result = fun(e, params);
+      console.log(result);
       const self = this;
       const {cav, ctx} = params;
       let { data,index } = result;
