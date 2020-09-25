@@ -12,7 +12,7 @@ class Plot{
    constructor(params){
       // dom节点
       container = initCon(params);
-      this.sourceData = { masterNode: params.sourceData, line: [{type: 'line', options: {start: { x:0 ,y:0}, end: {ex: 110, ey: 110}}}] }
+      this.sourceData = params.data
       // 数据源 监听
       this.sourceData =  PubMethods.deepWatch.call(this, this.sourceData, drawAll, container.canvas.ctx, container.canvas.cav);
       // 绘制canvas

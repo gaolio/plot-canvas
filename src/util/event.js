@@ -88,7 +88,7 @@ const currentDataFormate = (e,obj,cav) => {
          // 鼠标样式
          params.cav.classList[status ? 'add' : 'remove'](style.get('mousemove'));
          params.cav.classList[result.cts ? 'add' : 'remove'](style.get('mousemoveCts'));
-         self.sourceData.ctspot = result.status ? drawcts(result.data.options) : [];
+         // self.sourceData.ctspot = result.status ? drawcts(result.data.options) : [];
       }
    }
  }

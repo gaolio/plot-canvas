@@ -102,12 +102,21 @@ export const drawAll = function (sourceData, ctx, cav) {
   const keys = Object.keys(sourceData);
   keys.forEach(item => {
     // 主节点处理流程
-    if (item === 'masterNode' || item === "ctspot" || "line") {
+    if (item === 'masterNode' || item === "ctspot") {
       const params = sourceData[item];
       for (let i = 0; i < params.length; i++) {
         const items = params[i]
         draw.get(items.type)(ctx, items.options)
       }
+    }
+    // line
+    if(item === 'line') {
+      const params = sourceData[item];
+      console.log(params);
+      // for (let i = 0; i < params.length; i++) {
+      //   const items = params[i]
+      //   draw.get(items.type)(ctx, items.options)
+      // }
     }
   })
 }
@@ -145,4 +154,31 @@ export const drawcts = function (options) {
     }
   ]
   return obj
+}
+
+
+// 画线过程
+export const drawLine = (start, end, sourceData) => {
+  const {x,y} = start;
+  const {cx,cy} = end;
+  // 判断方向 起始点 结束点 大小
+  const xx = x > cx ? cx : x;
+  const dx = x > cx ? x : cx;
+  const xy = y > cy ? cy : y;
+  const dy = y > cy ? y : cy;
+  // 判断绘制过程有无障碍
+  // 起始点
+  const arr = [
+    {x: left, y: top}
+  ]; 
+  sourceData.forEach(item => {
+    const { x, y, w, h } = item;
+    const lastSpot = arr.slice(-1)[0];
+    // 是否在绘制范围内
+    // if (x > xx && x <= dx && y >= xy && y <= dy) {
+    //     // 绘制第一点
+    //     arr.push({x, y: lastSpot.y})
+    //     arr.push({x, y: cy > y ? lastSpot.y})
+    // }
+  })
 }
