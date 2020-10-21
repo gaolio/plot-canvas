@@ -116,64 +116,43 @@ export const queryDom = node => {
   if (!status) return node;
   return document.querySelector(node);
 }
-
-/**
- *  @param {Object} obj canvas数据源
- *  @param {Function} fun 改变之后的回掉函数
- */
-export const watchSourceData = function (obj, fun, ctx, cav) {
-  // 始终改变的是原素组
-  const self = this;
-  const proxy = new Proxy(obj, {
-    get: function (obj, key) {
-      return obj[key]
-    },
-    set: function (obj, key, value) {
-      if (typeof value === 'object') value = deepWatch.call(self, value, fun, ctx, cav);
-      obj[key] = value;
-      fun(self.sourceData || obj, ctx, cav)
-      return true;
-    }
-  })
-  return proxy
-}
-// 循环添加proxy
-export const deepWatch = function (obj, fun, ctx, cav) {
-  let result = false;
-  if (typeof obj === 'object') {
-    for (let i in obj) {
-      if (typeof obj[i] === 'object') obj[i] = deepWatch.call(this, obj[i], fun, ctx, cav)
-    }
-    result = watchSourceData.call(this, obj, fun, ctx, cav)
-  } else { result = obj }
-  return result;
-}
-
-// 修改数据源
-export const modifySource = function () {
-  const length = this.sourceData.masterNode.length;
-  this.sourceData.masterNode[length] = {
-    type: 'rect',
-    options: { x: 100, y: 400, w: 100, h: 45, r: 10, text: '开始' }
-  }
-}
-
-
-
-// 函数截流
-
-const throttle = (fun, time) => {
-  const timer = new Date().getTime();
-  return () => {
-    const currentTime = new Date().getTime();
-    if ((currentTime - timer) > time) {
-      fun()
-      timer = currentTime;
-    }
-  }
-}
-
 // 对象克隆
 export const cloneObj = obj => {
   return JSON.parse(JSON.stringify(obj))
 }
+
+
+class ComputerPosition {
+  constructor(params){
+    this.init(params);
+  }
+  init(params){
+    this.sourceData = params.sourceData;
+    this.node = params.node
+  }
+  // 全局处理点击事件
+  handlerEvents(ev){
+    const arr = this.sourceData;
+    // 循环判断是否有坐标点
+    for(let i in arr) {
+      const options = arr[i];
+      const result = this.rect(options,ev);
+      if(result) return result;
+    }
+    return false
+  }
+  // 根据类型处理位置
+  // 参数一： 节点信息 参数二：事件对象evnets
+  rect(options, ev){
+    // canvas信息
+    const { cav } = this.node;
+    const { x, y, w, h } = options;
+    const cx = ev.clientX - cav.offsetLeft, cy = ev.clientY - cav.offsetTop;
+    // 判断是否在当前节点范围内
+    if (cx > x && cx <= (x + w) && cy >= y && cy <= (y + h)) return options
+    return false
+  }
+}
+
+
+export default ComputerPosition

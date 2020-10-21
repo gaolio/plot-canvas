@@ -26,18 +26,16 @@ const currentDataFormate = (e,obj,cav) => {
    return obj;
 }
 
- export const dbClick = function (fun,params) {
-    const e = event || window.event;
-    const result = fun(e, params);
-    if(result.status) {
-      // 位置
-      const obj = cloneObj(result.data);
-      const {options} = obj; 
-      const {x, y} = comPos(params.cav, options);
-      options.x = x;
-      options.y = y;
-      modifyText(options, result)
-    }  
+ export const dbClick = function() {
+   const e = event || window.event;
+   const option = this.computer.handlerEvents(e)
+   if(option) {
+      // 修改文本信息
+      modifyText(option, () => {
+         // 绘制
+         this.draw.drawReplace(this.positionInfo)
+      });    
+   }
  }
 
  export const mouseDown = function (fun,params) {
@@ -95,9 +93,11 @@ const currentDataFormate = (e,obj,cav) => {
 
 
 // 事件添加
- export const addEvents = (self,cav, fun, params) => {
-    cav.addEventListener('dblclick', dbClick.bind(self, fun, params))
-    cav.addEventListener('mousedown', mouseDown.bind(self, fun, params))
-    cav.addEventListener('mouseUp', mouseUp.bind(self, fun, params))
-    cav.addEventListener('mousemove', mousemove.call(self, fun, params))
+ export default function () {
+    console.log(this);
+    const { cav } = this.node;
+    cav.addEventListener('dblclick', dbClick.bind(this))
+   //  cav.addEventListener('mousedown', mouseDown.bind(self, fun, params))
+   //  cav.addEventListener('mouseUp', mouseUp.bind(self, fun, params))
+   //  cav.addEventListener('mousemove', mousemove.call(self, fun, params))
  }

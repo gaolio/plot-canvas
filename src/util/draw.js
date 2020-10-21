@@ -112,7 +112,6 @@ export const drawAll = function (sourceData, ctx, cav) {
     // line
     if(item === 'line') {
       const params = sourceData[item];
-      console.log(params);
       // for (let i = 0; i < params.length; i++) {
       //   const items = params[i]
       //   draw.get(items.type)(ctx, items.options)

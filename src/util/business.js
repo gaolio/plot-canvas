@@ -21,7 +21,7 @@ export const initCon = params => {
 }
 
 // 修改文本
-export const modifyText = function (options, source) {
+export const modifyText = function (options, callBack) {
   const { x, y, w, h,r } = options;
   if (!textArea) {
     textArea = document.createElement('textarea');
@@ -40,8 +40,9 @@ export const modifyText = function (options, source) {
   document.body.appendChild(textArea);
   textArea.focus();
   textArea.onblur = function(){
-   source.data.options.text = this.value;
-   textArea.setAttribute('style', 'display: none')
+    options.text = this.value;
+    textArea.setAttribute('style', 'display: none')
+    callBack();
   }
 }
 
